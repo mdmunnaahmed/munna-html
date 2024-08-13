@@ -7748,6 +7748,15 @@ footer.clean-footer.crev:before {
     transform: translateY(0px);
     opacity: 1;
 }
+@media (max-width: 991px) {
+    .services-boxs .item-box h5,
+    .services-boxs .item-box p {
+        -webkit-transform: translateY(0px);
+        -ms-transform: translateY(0px);
+        transform: translateY(0px);
+        opacity: 1;
+    }   
+}
 
 .services-crev .item-box {
     padding: 40px 60px;
