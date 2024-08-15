@@ -81,7 +81,7 @@
         event.preventDefault();
         const formData = new FormData(this);
 
-        fetch("update_item.php", {
+        fetch("1_upload.php", {
           method: "POST",
           body: formData,
         })

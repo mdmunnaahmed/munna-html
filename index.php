@@ -428,7 +428,7 @@
             </ul>
           </section>
           <!-- ==================== End Marquee ==================== -->
-
+            
           <!-- ==================== Start Portfolio ==================== -->
           <section class="portfolio-carsouel section-padding" data-scroll-index="3">
             <div class="container">
@@ -462,106 +462,44 @@
               <div class="work-swiper-center" data-carousel="swiper" data-items="2" data-center="center" data-loop="true" data-space="100">
                 <div id="content-carousel-container-unq-work" class="swiper-container" data-swiper="container">
                   <div class="swiper-wrapper">
+                <?php
+                  $host = 'localhost';
+                  $user = 'gdiifznm_munna';
+                  $pass = 'MunnaDatabase';
+                  $db_name = 'gdiifznm_munna';
+
+                  $conn = new mysqli($host, $user, $pass, $db_name);
+
+                  if ($conn->connect_error) {
+                      die("Connection failed: " . $conn->connect_error);
+                  }
+                  $result = $conn->query("SELECT * FROM items");
+                  while ($row = $result->fetch_assoc()) {
+                    echo '
                     <div class="swiper-slide">
-                      <div class="item">
-                        <div class="img">
-                          <img src="./assets/imgs/products/hyion.avif" alt="img" />
+                        <div class="item">
+                            <div class="img">
+                                <img src="' . $row['image_path'] . '" alt="img" />
+                            </div>
+                            <div class="cont d-flex align-items-center mt-30 pb-15 bord-thin-bottom">
+                                <div>
+                                    <a href="' . $row['link'] . '">
+                                        <p class="h4">' . $row['title'] . '</p>
+                                    </a>
+                                    <p>' . $row['category'] . '</p>
+                                </div>
+                                <div class="ml-auto">
+                                    <a href="' . $row['link'] . '" class="rmore">
+                                        <img src="assets/imgs/arrow-right.png" alt="img" class="icon-img-20" />
+                                    </a>
+                                </div>
+                            </div>
                         </div>
-                        <div class="cont d-flex align-items-center mt-30 pb-15 bord-thin-bottom">
-                          <div>
-                            <a href="/template/hyion">
-                              <p class="h4">Hyion - HYIP Investment HTML Template</p>
-                            </a>
-                            <p>Hyip</p>
-                          </div>
-                          <div class="ml-auto">
-                            <a href="/template/hyion" class="rmore">
-                              <img src="assets/imgs/arrow-right.png" alt="img" class="icon-img-20" />
-                            </a>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="swiper-slide">
-                      <div class="item">
-                        <div class="img">
-                          <img src="./assets/imgs/products/sinek.png" alt="img" />
-                        </div>
-                        <div class="cont d-flex align-items-center mt-30 pb-15 bord-thin-bottom">
-                          <div>
-                            <a href="/template/sinek">
-                              <p class="h4">Sinek - Currency Exchange HTML Template</p>
-                            </a>
-                            <p>Banking</p>
-                          </div>
-                          <div class="ml-auto">
-                            <a href="/template/sinek" class="rmore">
-                              <img src="assets/imgs/arrow-right.png" alt="img" class="icon-img-20" />
-                            </a>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="swiper-slide">
-                      <div class="item">
-                        <div class="img">
-                          <img src="./assets/imgs/products/kidsfun.avif" alt="img" />
-                        </div>
-                        <div class="cont d-flex align-items-center mt-30 pb-15 bord-thin-bottom">
-                          <div>
-                            <a href="/template/kidsfun">
-                              <p class="h4">Kidsfun - Kids Learning Platform HTML Template</p>
-                            </a>
-                            <p>LMS</p>
-                          </div>
-                          <div class="ml-auto">
-                            <a href="/template/kidsfun" class="rmore">
-                              <img src="assets/imgs/arrow-right.png" alt="img" class="icon-img-20" />
-                            </a>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="swiper-slide">
-                      <div class="item">
-                        <div class="img">
-                          <img src="./assets/imgs/products/viserhost.avif" alt="img" />
-                        </div>
-                        <div class="cont d-flex align-items-center mt-30 pb-15 bord-thin-bottom">
-                          <div>
-                            <a href="/template/viserhost">
-                            <p class="h4">ViserHost - Hosting Business HTML Template</p>
-                            </a>
-                            <p>Hosting</p>
-                          </div>
-                          <div class="ml-auto">
-                            <a href="/template/viserhost" class="rmore">
-                              <img src="assets/imgs/arrow-right.png" alt="img" class="icon-img-20" />
-                            </a>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="swiper-slide">
-                      <div class="item">
-                        <div class="img">
-                          <img src="./assets/imgs/products/digihyip.png" alt="img" />
-                        </div>
-                        <div class="cont d-flex align-items-center mt-30 pb-15 bord-thin-bottom">
-                          <div>
-                            <a href="/template/digihyip">
-                            <p class="h4">Digihyip - Hyip Investment Platform Html Template</p>
-                            </a>
-                            <p>Hyip</p>
-                          </div>
-                          <div class="ml-auto">
-                            <a href="/template/digihyip" class="rmore">
-                              <img src="assets/imgs/arrow-right.png" alt="img" class="icon-img-20" />
-                            </a>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
+                    </div>';
+                }
+                
+                $conn->close();
+                ?>
                   </div>
                 </div>
               </div>
