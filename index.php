@@ -20,7 +20,7 @@
     <title>Munna - Frontend VueJS Developer</title>
 
     <!-- Favicon -->
-    <link rel="shortcut icon" href="assets/imgs/favicon.ico" />
+    <link rel="shortcut icon" href="assets/imgs/thumbnail.png" />
 
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css?family=Poppins:400,500,&amp;display=swap" rel="stylesheet" />
@@ -63,7 +63,7 @@
         <div class="container">
           <!-- Logo -->
           <a class="logo icon-img-100" href="#">
-            <img src="assets/imgs/logo-light.png" alt="logo" />
+            <img src="assets/imgs/logo.png" alt="logo" />
           </a>
 
           <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -122,7 +122,7 @@
 
       <div class="hamenu one-scroll">
         <div class="logo icon-img-100">
-          <img src="assets/imgs/logo-light.png" alt="img" />
+          <img src="assets/imgs/logo.png" alt="img" />
         </div>
         <div class="close-menu cursor-pointer ti-close">
           <svg width="24px" height="24px" style="margin-top: -5px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -906,7 +906,7 @@
               <div class="row">
                 <div class="col-lg-4">
                   <div class="logo icon-img-100">
-                    <img src="assets/imgs/logo-light.png" alt="img" />
+                    <img src="assets/imgs/logo.png" alt="img" />
                   </div>
                 </div>
                 <div class="col-lg-3">

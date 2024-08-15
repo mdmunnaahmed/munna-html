@@ -12,11 +12,16 @@ if ($conn->connect_error) {
 
 // Handle add or update request
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $title = $_POST['title'];
-    $category = $_POST['category'];
-    $link = $_POST['link'];
+    $title = isset($_POST['title']) ? trim($_POST['title']) : '';
+    $category = isset($_POST['category']) ? trim($_POST['category']) : '';
+    $link = isset($_POST['link']) ? trim($_POST['link']) : '';
     $item_id = isset($_POST['update_id']) ? intval($_POST['update_id']) : null;
     $image_path = '';
+
+    if (empty($title) || empty($category) || empty($link)) {
+        echo json_encode(['success' => false, 'error' => 'Title, category, and link are required.']);
+        exit;
+    }
 
     if (isset($_FILES['image']) && $_FILES['image']['error'] === 0) {
         $upload_dir = 'assets/imgs/products/';
@@ -31,14 +36,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     if ($item_id) {
+        // Update item
         $stmt = $conn->prepare("UPDATE items SET title = ?, category = ?, image_path = ?, link = ? WHERE id = ?");
         $stmt->bind_param('ssssi', $title, $category, $image_path, $link, $item_id);
     } else {
+        // Add new item
         $stmt = $conn->prepare("INSERT INTO items (title, category, image_path, link) VALUES (?, ?, ?, ?)");
         $stmt->bind_param('ssss', $title, $category, $image_path, $link);
     }
     
     $success = $stmt->execute();
+    echo json_encode(['success' => $success]);
     $stmt->close();
 }
 
@@ -67,7 +75,7 @@ $conn->close();
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Manage Items</title>
     <style>
-         * {
+        * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
@@ -103,8 +111,8 @@ $conn->close();
             cursor: pointer;
         }
         .wrapper {
-          display: flex;
-          gap: 50px;
+            display: flex;
+            gap: 50px;
         }
         .update-form {
             width: 700px;
@@ -121,7 +129,7 @@ $conn->close();
         #items li > div {
             display: flex;
             align-items: center;
-            gap: 15px
+            gap: 15px;
         }
         #items li img {
             width: 120px;
@@ -141,69 +149,64 @@ $conn->close();
 </head>
 <body>
     <div class="container">
-      <div class="wrapper">
+        <div class="wrapper">
+            <!-- Update Form -->
+            <div class="update-form">
+                <form id="updateForm" enctype="multipart/form-data" method="POST">
+                    <img id="preview" src="" alt="preview" style="width: 350px; height: auto; margin-bottom: 40px" />
+                    <div class="form-group">
+                        <label>Title:</label>
+                        <input type="text" name="title" id="title" required />
+                    </div>
+                    <div class="form-group">
+                        <label>Category:</label>
+                        <input type="text" name="category" id="category" required />
+                    </div>
+                    <div class="form-group">
+                        <label>Image:</label>
+                        <input type="file" name="image" id="image" accept="image/*" />
+                    </div>
+                    <div class="form-group">
+                        <label>Link:</label>
+                        <input type="text" name="link" id="link" required />
+                    </div>
+                    <input type="hidden" name="update_id" id="update_id" /> <!-- Hidden input for item ID -->
+                    <input type="hidden" name="existing_image" id="existing_image" /> <!-- Hidden input for existing image -->
+                    <button type="submit" id="mainSubmitBtn">Add Item</button>
+                </form>
+            </div>
 
-        <!-- Update Form -->
-        <div class="update-form">
-            <form id="updateForm" enctype="multipart/form-data" method="POST">
-                <img id="preview" src="" alt="preview" style="width: 350px; height: auto; margin-bottom: 40px" />
-                <div class="form-group">
-                    <label>Title:</label>
-                    <input type="text" name="title" id="title" required />
-                </div>
-                <div class="form-group">
-                    <label>Category:</label>
-                    <input type="text" name="category" id="category" required />
-                </div>
-                <div class="form-group">
-                    <label>Image:</label>
-                    <input type="file" name="image" id="image" accept="image/*" />
-                </div>
-                <div class="form-group">
-                    <label>Link:</label>
-                    <input type="text" name="link" id="link" required />
-                </div>
-                <input type="hidden" name="update_id" id="update_id" /> <!-- Hidden input for item ID -->
-                <input type="hidden" name="existing_image" id="existing_image" /> <!-- Hidden input for existing image -->
-                <button type="submit" id='mainSubmitBtn'>Add Item</button>
-            </form>
-        </div>
-
-        <!-- Item List -->
-        <div class="item-list">
-            <h3>Items</h3>
-            <ul id="items">
-                <?php foreach ($items as $item): ?>
+            <!-- Item List -->
+            <div class="item-list">
+                <h3>Items</h3>
+                <ul id="items">
+                    <?php foreach ($items as $item): ?>
                     <li>
                         <div>
-                            <img src="<?= $item['image_path']; ?>" alt="<?= $item['title']; ?>" />
-                            <span><?= $item['title']; ?></span>
-                            <button onclick="editItem(<?= $item['id']; ?>)">Update</button>
-                            <form method="POST" style="display:inline;" onsubmit="return confirm('Are you sure you want to delete this item?');">
-                                <input type="hidden" name="delete_id" value="<?= $item['id']; ?>" />
-                                <button type="submit">Delete</button>
-                            </form>
+                        <img src="<?= $item['image_path']; ?>" alt="<?= $item['title']; ?>" />
+                        <span><?= $item['title']; ?></span>
+                        <button onclick="editItem(<?= $item['id']; ?>)">Update</button>
+                        <form method="POST" style="display:inline;" onsubmit="return confirm('Are you sure you want to delete this item?');">
+                            <input type="hidden" name="delete_id" value="<?= $item['id']; ?>" />
+                            <button type="submit">Delete</button>
+                        </form>
                         </div>
                     </li>
-                <?php endforeach; ?>
-            </ul>
-          </div>
-
-
+                    <?php endforeach; ?>
+                </ul>
+            </div>
         </div>
-
     </div>
 
     <script>
         // Load item details into the form for editing
         function editItem(itemId) {
-          document.querySelector('#mainSubmitBtn').textContent = 'Update Item';
+            document.querySelector('#mainSubmitBtn').textContent = 'Update Item';
 
             const items = <?= json_encode($items); ?>;
             const itemIdInt = parseInt(itemId, 10); // Convert itemId to integer
             const item = items.find(i => parseInt(i.id, 10) === itemIdInt); // Convert item id to integer for comparison
-            console.log('item found:', item);
-            
+
             if (item) {
                 document.getElementById('title').value = item.title;
                 document.getElementById('category').value = item.category;
