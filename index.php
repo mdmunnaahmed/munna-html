@@ -430,7 +430,7 @@
           <!-- ==================== End Marquee ==================== -->
             
           <!-- ==================== Start Portfolio ==================== -->
-          <section class="portfolio-carsouel section-padding d-none" data-scroll-index="3">
+          <section class="portfolio-carsouel section-padding" data-scroll-index="3">
             <div class="container">
               <div class="sec-head mb-80">
                 <p class="sub-title main-color mb-25">MY Portfolio</p>
